@@ -4,10 +4,11 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class ClientWriter extends Thread{
-    private Socket clientSocket;
+    private final Socket clientSocket;
+    private final Client client;
     private PrintWriter dataOut;
     private Scanner scanner;
-    private Client client;
+
     public ClientWriter(Socket socket, Client client){
         this.clientSocket = socket;
         this.client = client;
