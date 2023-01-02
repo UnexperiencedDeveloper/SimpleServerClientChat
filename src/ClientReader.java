@@ -5,10 +5,11 @@ import java.net.Socket;
 
 public class ClientReader extends Thread{
 
-    private Socket clientSocket;
+    private final Socket clientSocket;
+    private final Client client;
     private BufferedReader dataIn;
     private String message;
-    private Client client;
+
     private boolean usernameSet = false;
     public ClientReader(Socket socket, Client client){
         this.clientSocket = socket;

@@ -75,7 +75,19 @@ public class Server{
         handlerToClose.interrupt();
     }
     public static void main(String[] args){
-        Server newServer = new Server(4444);
-        newServer.startServer();
+        if(args.length < 1){
+            System.out.println("You must specify the Port Number");
+            System.out.println("E.g. java Server 1234");
+            return;
+        }
+        try {
+            int port = Integer.parseInt(args[0]);
+            Server newServer = new Server(4444);
+            newServer.startServer();
+        } catch (NumberFormatException ex){
+            System.out.println("Port Number must be an Integer");
+        }
+
+
     }
 }
