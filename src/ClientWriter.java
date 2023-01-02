@@ -26,7 +26,7 @@ public class ClientWriter extends Thread{
                 dataOut.println(msgToSend);
             }
             // When client.active gets False -> writer stucks in scanner.nextLine()
-            // So Reader sout's press key to exit, to trigger the last Input and then exit the Loop
+            // So Reader sout's press Enter to exit, to trigger the last Input and then exit the Loop
 
         } catch (IOException ex){
             //TODO: Handle Exception

@@ -39,6 +39,14 @@ public class Server{
         }
     }
 
+    public ArrayList<String> getAllUsers(){
+        ArrayList<String> allUsernames = new ArrayList<String>();
+        for (UserHandler handler: connectedUsers) {
+            allUsernames.add(handler.username);
+        }
+        return allUsernames;
+    }
+
     public boolean checkUsername(String name){
         // Checks if desired Username is free
         // Looping through all UserHandler

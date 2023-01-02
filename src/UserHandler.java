@@ -5,12 +5,13 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class UserHandler extends Thread{
-    private Socket clientSocket;
+    private final Socket clientSocket;
+    private final Server server;
     private PrintWriter dataOut; // Sends Data to other Sockets
     private BufferedReader dataIn; // Recieves Data from other Sockets
     public String username = "";
     private String message;
-    private Server server;
+
     public UserHandler(Socket clientSocket, Server server){
         this.clientSocket = clientSocket;
         this.server = server;
@@ -23,6 +24,8 @@ public class UserHandler extends Thread{
             dataOut = new PrintWriter(clientSocket.getOutputStream(), true);
             dataIn = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
+
+            // Check if Username is valid
             boolean checkUsernameResult = false;
             String possibleUserName;
             do{
@@ -32,6 +35,7 @@ public class UserHandler extends Thread{
                 if(possibleUserName == null) continue;
                 checkUsernameResult = server.checkUsername(possibleUserName);
             }while (!checkUsernameResult);
+
             // Username is available, set Username
             username = possibleUserName;
             systemMessage("username set");
@@ -42,6 +46,7 @@ public class UserHandler extends Thread{
             // Info Message
             dataOut.println("-> '/username newUserName' to change username ");
             dataOut.println("-> '/exit' to exit ");
+            dataOut.println("-> '/allusers' to see connected Users ");
 
             // Loop for Reading and Writing
             while ((message = dataIn.readLine()) != null){
@@ -54,6 +59,10 @@ public class UserHandler extends Thread{
                         break;
                     case "/username":
                         setUsername(command[1]);
+                        break;
+                    case "/allusers":
+                        // Print all Connected Users
+                        dataOut.println(server.getAllUsers().toString());
                         break;
                     default:
                         // No Command Send
@@ -72,6 +81,7 @@ public class UserHandler extends Thread{
     private void systemMessage(String msg){
         // Formats message to a System message
         // ClientReader can differentiate between user and system message
+        // e.g. /SYSTEMMESSAGE username set
         dataOut.println(String.format("/SYSTEMMESSAGE %s", msg));
     }
 
